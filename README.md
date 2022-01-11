@@ -10,7 +10,7 @@ Setup your local server.
 
 Create new databse or use your current and change details in includes/config.php
 
-To import data to the databse, use data.sql
+To import databse, use data.sql
 
 ## How to use
 default URL of your domain will redirect to a default user login page where you can create new user or use precreated - email (test@test.com), password(test)
