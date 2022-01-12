@@ -27,10 +27,6 @@ if (strlen($_SESSION['alogin']) == 0) {
         }
     }
     ?>
-
-    <!doctype html>
-    <html lang="en" class="no-js">
-
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,31 +76,21 @@ if (strlen($_SESSION['alogin']) == 0) {
             <div class="errorWrap"><strong>Kļūda</strong>:<?php echo htmlentities($error); ?>
             </div><?php } else if ($msg) { ?>
             <div class="succWrap"><strong>Veiksmīgi</strong>:<?php echo htmlentities($msg); ?> </div><?php } ?>
-        <div class="form-group">
             <label>Vecā parole</label>
             <div class="col-sm-8">
                 <input type="password" name="password" id="password" required>
             </div>
-        </div>
-        <div class="form-group">
             <label>Jaunā parole</label>
             <div class="col-sm-8">
                 <input type="password"name="newpassword" id="newpassword" required>
             </div>
-        </div>
-        <div class="form-group">
             <label>Apstiprināt jauno paroli</label>
             <div class="col-sm-8">
                 <input type="password" name="confirmpassword" id="confirmpassword" required>
             </div>
-        </div>
-        <div class="form-group">
                 <button class="btn btn-primary" name="submit" type="submit">Saglabāt izmaiņas</button>
             </div>
-        </div>
-
     </form>
-
     <script type="text/javascript">
         $(document).ready(function () {
             setTimeout(function() {
