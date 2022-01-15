@@ -11,8 +11,9 @@ if (strlen($_SESSION['alogin']) == 0) {
     }
 
     if (isset($_POST['submit'])) {
+        $title = $_POST['title'];
         $reciver = $_POST['email'];
-        $message = $_POST['message'];
+        $description = $_POST['description'];
         $notitype = 'Send Message';
         $sender = 'Admin';
 
@@ -23,13 +24,14 @@ if (strlen($_SESSION['alogin']) == 0) {
         $querynoti->bindParam(':notitype', $notitype, PDO::PARAM_STR);
         $querynoti->execute();
 
-        $sql = "insert into feedback (sender, reciver, feedbackdata) values (:user,:reciver,:description)";
+        $sql = "insert into feedback (sender, reciver, title, feedbackdata) values (:user,:reciver,:title,:description)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':user', $sender, PDO::PARAM_STR);
         $query->bindParam(':reciver', $reciver, PDO::PARAM_STR);
-        $query->bindParam(':description', $message, PDO::PARAM_STR);
+        $query->bindParam(':title', $title, PDO::PARAM_STR);
+        $query->bindParam(':description', $description, PDO::PARAM_STR);
         $query->execute();
-        $msg = "Atsauksme nosūtīta";
+        $msg = "Ziņa nosūtīta";
     }
     ?>
     <head>
@@ -41,10 +43,29 @@ if (strlen($_SESSION['alogin']) == 0) {
         <meta name="theme-color" content="#3e454c">
 
         <title>Atsauksmes atbildēšana</title>
+        <style>
+            .errorWrap {
+                padding: 10px;
+                margin: 0 0 20px 0;
+                background: #dd3d36;
+                color: #fff;
+                -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+                box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+            }
+
+            .succWrap {
+                padding: 10px;
+                margin: 0 0 20px 0;
+                background: #5cb85c;
+                color: #fff;
+                -webkit-box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+                box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .1);
+            }
+        </style>
     </head>
     <body>
     <?php
-    $sql = "SELECT * from users;";
+    $sql = "SELECT * from users";
     $query = $dbh->prepare($sql);
     $query->execute();
     $result = $query->fetch(PDO::FETCH_OBJ);
@@ -53,6 +74,10 @@ if (strlen($_SESSION['alogin']) == 0) {
     <?php include('includes/header.php'); ?>
     <h2>Atbildēt uz atsauksmi</h2>
     <div>Rediģēt informāciju</div>
+    <?php if ($error) { ?>
+        <div class="errorWrap"><strong>Kļūda</strong>:<?php echo htmlentities($error); ?>
+        </div><?php } else if ($msg) { ?>
+        <div class="succWrap"><strong>Veiksmīgi</strong>:<?php echo htmlentities($msg); ?> </div><?php } ?>
     <form method="post" enctype="multipart/form-data">
 
         <label>E-pasts<span style="color:red">*</span></label>
@@ -60,12 +85,15 @@ if (strlen($_SESSION['alogin']) == 0) {
             <input type="text" name="email" class="form-control" readonly required
                    value="<?php echo htmlentities($replyto); ?>">
         </div>
+        <label>Nosaukums<span style="color:red">*</span></label>
+        <div class="col-sm-5">
+            <input type="text" name="title" required value="<?php echo htmlentities($title); ?>">
+        </div>
         <label>Ziņa<span style="color:red">*</span></label>
         <div class="col-sm-6">
-            <textarea name="message" cols="30" rows="10"></textarea>
+            <textarea name="description" cols="30" rows="10"></textarea>
         </div>
-        <input type="hidden" name="editid" required value="<?php echo htmlentities($result->id); ?>">
-        <button class="btn btn-primary" name="submit" type="submit">Sūtīt atbildi</button>
+        <button name="submit" type="submit">Sūtīt atbildi</button>
     </form>
     </body>
     </html>

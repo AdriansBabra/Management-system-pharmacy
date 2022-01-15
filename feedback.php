@@ -22,7 +22,7 @@ if (strlen($_SESSION['alogin']) == 0) {
         $querynoti->bindParam(':notitype', $notitype, PDO::PARAM_STR);
         $querynoti->execute();
 
-        $sql = "insert into feedback (sender, reciver, title,feedbackdata) values (:user,:reciver,:title,:description)";
+        $sql = "insert into feedback (sender, reciver, title, feedbackdata) values (:user,:reciver,:title,:description)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':user', $user, PDO::PARAM_STR);
         $query->bindParam(':reciver', $reciver, PDO::PARAM_STR);
@@ -65,11 +65,13 @@ if (strlen($_SESSION['alogin']) == 0) {
     <body>
     <h1>Atsauksme</h1>
     <?php
-    $sql = "SELECT * from users;";
+    $email = $_SESSION['alogin'];
+    $sql = "SELECT * from users where email = (:email);";
     $query = $dbh->prepare($sql);
+    $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->execute();
     $result = $query->fetch(PDO::FETCH_OBJ);
-    $cnt = 1;
+
     ?>
     <?php include('includes/header.php'); ?>
     <h2>Sniedziet atsauksmi par mūsu aptiekas mājaslapu!</h2>
