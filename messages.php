@@ -28,6 +28,7 @@ if (strlen($_SESSION['alogin']) == 0) {
         <tr>
             <th>#</th>
             <th>Lietotājs</th>
+            <th>Tēma</th>
             <th>Ziņa</th>
         </tr>
         </thead>
@@ -47,6 +48,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                 <tr>
                     <td><?php echo htmlentities($cnt); ?></td>
                     <td><?php echo htmlentities($result->sender); ?></td>
+                    <td><?php echo htmlentities($result->title); ?></td>
                     <td><?php echo htmlentities($result->feedbackdata); ?></td>
                 </tr>
                 <?php $cnt = $cnt + 1;
